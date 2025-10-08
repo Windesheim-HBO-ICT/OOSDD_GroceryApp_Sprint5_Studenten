@@ -20,5 +20,7 @@ namespace Grocery.Core.Models
         {
             return $"{Name} - {Stock} op voorraad";
         }
+
+        public List<ProductCategory> ProductCategories { get; set; } = new();
     }
 }

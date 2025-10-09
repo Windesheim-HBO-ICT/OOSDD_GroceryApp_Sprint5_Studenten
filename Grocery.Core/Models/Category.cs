@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Grocery.Core.Models
+﻿namespace Grocery.Core.Models
 {
-    internal class Category
+    public class Category : Model
     {
+        public Category(int id, string name) : base(id, name)
+        {
+        }
     }
 }

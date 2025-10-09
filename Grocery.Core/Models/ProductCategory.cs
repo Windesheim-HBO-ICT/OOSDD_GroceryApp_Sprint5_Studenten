@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Grocery.Core.Models
+﻿namespace Grocery.Core.Models
 {
-    internal class ProductCategory
+    public class ProductCategory : Model
     {
+        public int ProductId { get; set; }
+        public int CategoryId { get; set; }
+        public Product Product { get; set; } = new(0, "None", 0);
+        public Category Category { get; set; } = new(0, "None");
+
+        public ProductCategory(int id, int productId, int categoryId) : base(id, "")
+        {
+            ProductId = productId;
+            CategoryId = categoryId;
+        }
     }
 }

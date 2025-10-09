@@ -1,8 +1,8 @@
 ﻿using Grocery.Core.Models;
 
-namespace Grocery.Core.Interfaces.Repositories
+namespace Grocery.Core.Interfaces.Services
 {
-    public interface ICategoryRepository
+    public interface ICategoryService
     {
         public List<Category> GetAll();
         public Category? Get(int id);

@@ -22,9 +22,8 @@ namespace Grocery.App
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
             builder.Services.AddSingleton<IGroceryListService, GroceryListService>();
             builder.Services.AddSingleton<IGroceryListItemsService, GroceryListItemsService>();
@@ -33,13 +32,19 @@ namespace Grocery.App
             builder.Services.AddSingleton<IClientService, ClientService>();
             builder.Services.AddSingleton<IFileSaverService, FileSaverService>();
             builder.Services.AddSingleton<IBoughtProductsService, BoughtProductsService>();
-
             builder.Services.AddSingleton<IGroceryListRepository, GroceryListRepository>();
             builder.Services.AddSingleton<IGroceryListItemsRepository, GroceryListItemsRepository>();
             builder.Services.AddSingleton<IProductRepository, ProductRepository>();
             builder.Services.AddSingleton<IClientRepository, ClientRepository>();
             builder.Services.AddSingleton<GlobalViewModel>();
-
+            builder.Services.AddSingleton<Grocery.Core.Interfaces.Repositories.ICategoryRepository, Grocery.Core.Data.Repositories.CategoryRepository>();
+            builder.Services.AddSingleton<Grocery.Core.Interfaces.Services.ICategoryService, Grocery.Core.Services.CategoryService>();
+            builder.Services.AddSingleton<Grocery.Core.Interfaces.Repositories.IProductCategoryRepository, Grocery.Core.Data.Repositories.ProductCategoryRepository>();
+            builder.Services.AddSingleton<Grocery.Core.Interfaces.Services.IProductCategoryService, Grocery.Core.Services.ProductCategoryService>();
+            builder.Services.AddTransient<CategoriesViewModel>();
+            builder.Services.AddTransient<CategoriesView>();
+            builder.Services.AddTransient<ProductCategoriesViewModel>();
+            builder.Services.AddTransient<ProductCategoriesView>();
             builder.Services.AddTransient<GroceryListsView>().AddTransient<GroceryListViewModel>();
             builder.Services.AddTransient<GroceryListItemsView>().AddTransient<GroceryListItemsViewModel>();
             builder.Services.AddTransient<ProductView>().AddTransient<ProductViewModel>();

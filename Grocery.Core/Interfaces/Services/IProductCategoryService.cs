@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Grocery.Core.Interfaces.Services
 {
-    internal interface IProductCategoryService
+    public interface IProductCategoryService
     {
+
     }
 }

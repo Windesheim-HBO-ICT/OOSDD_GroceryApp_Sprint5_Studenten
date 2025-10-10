@@ -10,7 +10,6 @@ namespace Grocery.App.Views
             InitializeComponent();
             BindingContext = viewModel;
         }
-
         // Wordt aangeroepen wanneer de view zichtbaar wordt.
         // Triggert het laden van data in het ViewModel.
         protected override void OnAppearing()

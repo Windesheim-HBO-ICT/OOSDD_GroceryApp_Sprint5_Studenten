@@ -8,11 +8,15 @@ namespace Grocery.Core.Data.Repositories
         private readonly List<Product> products;
         public ProductRepository()
         {
-            products = [
-                new Product(1, "Melk", 300, new DateOnly(2025, 9, 25)),
-                new Product(2, "Kaas", 100, new DateOnly(2025, 9, 30)),
-                new Product(3, "Brood", 400, new DateOnly(2025, 9, 12)),
-                new Product(4, "Cornflakes", 0, new DateOnly(2025, 12, 31))];
+            products = new List<Product>
+            {
+                new Product(1, "Melk", 300, 1.49m, new DateOnly(2025, 9, 25)),
+                new Product(2, "Kaas", 100, 2.99m, new DateOnly(2025, 9, 30)),
+                new Product(3, "Brood", 400, 2.49m, new DateOnly(2025, 9, 12)),
+                new Product(4, "Cornflakes", 0, 3.99m, new DateOnly(2025, 12, 31)),
+                new Product(5, "Appel", 100, 0.99m, new DateOnly(2025, 9, 25)),
+                new Product(6, "Banaan", 150, 0.59m, new DateOnly(2025, 9, 30))
+            };
         }
         public List<Product> GetAll()
         {
@@ -21,22 +25,22 @@ namespace Grocery.Core.Data.Repositories
 
         public Product? Get(int id)
         {
-            return products.FirstOrDefault(p => p.Id == id);
+            return products.Find(p => p.Id == id);
         }
 
         public Product Add(Product item)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
         public Product? Delete(Product item)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
         public Product? Update(Product item)
         {
-            Product? product = products.FirstOrDefault(p => p.Id == item.Id);
+            Product? product = products.Find(p => p.Id == item.Id);
             if (product == null) return null;
             product.Id = item.Id;
             return product;

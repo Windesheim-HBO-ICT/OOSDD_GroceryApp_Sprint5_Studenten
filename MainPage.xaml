@@ -1,0 +1,44 @@
+<CollectionView ItemsSource="{Binding Products}">
+    <CollectionView.Header>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Text="Name" Grid.Column="0" FontAttributes="Bold"/>
+            <Label Text="Price" Grid.Column="1" FontAttributes="Bold"/>
+        </Grid>
+    </CollectionView.Header>
+    <CollectionView.ItemTemplate>
+        <DataTemplate>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Text="{Binding Name}" Grid.Column="0"/>
+                <Label Text="{Binding Price, StringFormat='€{0:F2}'}" Grid.Column="1"/>
+            </Grid>
+        </DataTemplate>
+    </CollectionView.ItemTemplate>
+</CollectionView>
+
+public partial class MainPage : ContentPage
+{
+    public MainPage()
+    {
+        InitializeComponent();
+        BindingContext = new MainViewModel();
+    }
+}
+
+public class MainViewModel
+{
+    public ObservableCollection<Product> Products { get; set; }
+
+    public MainViewModel()
+    {
+        var repo = new ProductRepository();
+        Products = new ObservableCollection<Product>(repo.GetProducts());
+    }
+}

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <Shell
     x:Class="Grocery.App.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -18,7 +17,7 @@
             <ShellContent Title="Meest verkochte producten" ContentTemplate="{DataTemplate local:BestSellingProductsView}" />
         </Tab>
         <Tab Title="Categorieen" Icon="investment.png">
-            <ShellContent Title="De Product Categorien" ContentTemplate="{DataTemplate local:BestSellingProductsView}" />
+            <ShellContent Title="De Product Categorien" ContentTemplate="{DataTemplate local:CategoriesView}" />
         </Tab>
     </TabBar>
 </Shell>

@@ -6,13 +6,16 @@ namespace Grocery.Core.Data.Repositories
     public class ProductRepository : IProductRepository
     {
         private readonly List<Product> products;
+
+        // Product prijs toegevoegd.
         public ProductRepository()
         {
             products = [
-                new Product(1, "Melk", 300, new DateOnly(2025, 9, 25)),
-                new Product(2, "Kaas", 100, new DateOnly(2025, 9, 30)),
-                new Product(3, "Brood", 400, new DateOnly(2025, 9, 12)),
-                new Product(4, "Cornflakes", 0, new DateOnly(2025, 12, 31))];
+                new Product(1, "Melk", 300, 1.50m, new DateOnly(2025, 9, 25)),
+                new Product(2, "Kaas", 100, 4.99m, new DateOnly(2025, 9, 30)),
+                new Product(3, "Brood", 400, 2.25m, new DateOnly(2025, 9, 12)),
+                new Product(4, "Cornflakes", 0, 3.75m, new DateOnly(2025, 12, 31))
+            ];
         }
         public List<Product> GetAll()
         {
@@ -38,7 +41,10 @@ namespace Grocery.Core.Data.Repositories
         {
             Product? product = products.FirstOrDefault(p => p.Id == item.Id);
             if (product == null) return null;
-            product.Id = item.Id;
+
+            product.Stock = item.Stock;
+            product.Price = item.Price; // Product prijs toegevoegd.
+
             return product;
         }
     }

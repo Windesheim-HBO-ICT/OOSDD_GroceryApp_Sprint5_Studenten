@@ -6,7 +6,7 @@ namespace Grocery.Core.Interfaces.Repositories
     {
         List<Category> GetAll(); // Geeft alle categorien terug.
 
-        Category? Get(int id); // Geeft categorie terug met unieke identificatie.
+        Category? Get(int id); // Geeft categorie terug met gebruik van unieke identificatie.
 
         Category Add(Category item); // Maakt nieuwe categorie aan.
 

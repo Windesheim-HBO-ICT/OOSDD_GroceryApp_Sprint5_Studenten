@@ -7,7 +7,7 @@ namespace Grocery.Core.Data.Repositories
     {
         private readonly List<Category> categories;
 
-        // Initializes the repository with sample category data.
+        // Initialiseerd de repository met categorie data.
         public CategoryRepository()
         {
             categories = [

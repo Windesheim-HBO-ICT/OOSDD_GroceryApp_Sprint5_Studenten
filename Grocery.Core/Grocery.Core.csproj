@@ -4,6 +4,11 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Models\Services\**" />
+	  <EmbeddedResource Remove="Models\Services\**" />
+	  <None Remove="Models\Services\**" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<!-- Alleen als je MVVM source generators gebruikt -->

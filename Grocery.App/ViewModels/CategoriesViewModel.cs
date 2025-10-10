@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Grocery.Core.Interfaces.Services;
 
-
-namespace Grocery.Core.Services
+namespace Grocery.App.ViewModels
 {
-    public class CategoryService : ICategoryService
+    public partial class CategoriesViewModel : BaseViewModel
     {
 
     }

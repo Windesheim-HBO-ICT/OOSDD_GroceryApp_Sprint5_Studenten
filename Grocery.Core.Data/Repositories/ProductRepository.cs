@@ -5,40 +5,44 @@ namespace Grocery.Core.Data.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly List<Product> products;
+        private readonly List<Product> _products;
+
         public ProductRepository()
         {
-            products = [
+            _products = new List<Product>
+            {
                 new Product(1, "Melk", 300, new DateOnly(2025, 9, 25)),
                 new Product(2, "Kaas", 100, new DateOnly(2025, 9, 30)),
                 new Product(3, "Brood", 400, new DateOnly(2025, 9, 12)),
-                new Product(4, "Cornflakes", 0, new DateOnly(2025, 12, 31))];
-        }
-        public List<Product> GetAll()
-        {
-            return products;
+                new Product(4, "Cornflakes", 0, new DateOnly(2025, 12, 31))
+            };
         }
 
-        public Product? Get(int id)
-        {
-            return products.FirstOrDefault(p => p.Id == id);
-        }
+        public IEnumerable<Product> GetAll() => _products;
+
+        public Product? GetById(int id) => _products.FirstOrDefault(p => p.Id == id);
 
         public Product Add(Product item)
         {
-            throw new NotImplementedException();
+            _products.Add(item);
+            return item;
         }
 
         public Product? Delete(Product item)
         {
-            throw new NotImplementedException();
+            if (_products.Remove(item))
+                return item;
+            return null;
         }
 
         public Product? Update(Product item)
         {
-            Product? product = products.FirstOrDefault(p => p.Id == item.Id);
-            if (product == null) return null;
-            product.Id = item.Id;
+            var product = _products.FirstOrDefault(p => p.Id == item.Id);
+            if (product == null)
+                return null;
+
+            product.Stock = item.Stock;
+            product.ShelfLife = item.ShelfLife;
             return product;
         }
     }

@@ -10,7 +10,7 @@ namespace Grocery.Core.Interfaces.Services
 
         public Product? Delete(Product item);
 
-        public Product? Get(int id);
+        public Product? GetById(int id);
 
         public Product? Update(Product item);
     }

@@ -25,7 +25,7 @@ namespace Grocery.Core.Services
             throw new NotImplementedException();
         }
 
-        public GroceryList? Get(int id)
+        public GroceryList? GetById(int id) 
         {
             return _groceryRepository.Get(id);
         }

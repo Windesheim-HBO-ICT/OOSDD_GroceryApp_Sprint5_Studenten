@@ -4,14 +4,14 @@ namespace Grocery.Core.Interfaces.Repositories
 {
     public interface IProductRepository
     {
-        public List<Product> GetAll();
+        IEnumerable<Product> GetAll();
 
-        public Product? Get(int id);
+        Product? GetById(int id);
 
-        public Product Add(Product item);
+        Product Add(Product item);
 
-        public Product? Delete(Product item);
+        Product? Delete(Product item);
 
-        public Product? Update(Product item);
+        Product? Update(Product item);
     }
 }

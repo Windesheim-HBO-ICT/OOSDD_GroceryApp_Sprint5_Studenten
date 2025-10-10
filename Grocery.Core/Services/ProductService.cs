@@ -15,7 +15,7 @@ namespace Grocery.Core.Services
 
         public List<Product> GetAll()
         {
-            return _productRepository.GetAll();
+            return _productRepository.GetAll().ToList();
         }
 
         public Product Add(Product item)
@@ -28,7 +28,7 @@ namespace Grocery.Core.Services
             throw new NotImplementedException();
         }
 
-        public Product? Get(int id)
+        public Product? GetById(int id)
         {
             throw new NotImplementedException();
         }

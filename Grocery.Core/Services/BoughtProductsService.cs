@@ -17,13 +17,13 @@ namespace Grocery.Core.Services
             _clientRepository=clientRepository;
             _productRepository=productRepository;
         }
-        public List<BoughtProducts> Get(int? productId)
+        public List<BoughtProducts> GetById(int? productId)
         {
             List<BoughtProducts> boughtProducts = [];
             var MyGroceryListItems = _groceryListItemsRepository.GetAll();
             if (productId.HasValue && MyGroceryListItems != null && MyGroceryListItems.Count > 0)
             {
-                Product product = _productRepository.Get(productId.GetValueOrDefault());
+                Product product = _productRepository.GetById(productId.GetValueOrDefault());
                 foreach (var item in MyGroceryListItems)
                 {
                     if (item.ProductId == productId)

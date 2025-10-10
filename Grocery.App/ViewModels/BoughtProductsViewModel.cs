@@ -25,7 +25,7 @@ namespace Grocery.App.ViewModels
         partial void OnSelectedProductChanged(Product? oldValue, Product newValue)
         {
             BoughtProductsList.Clear();
-            List<BoughtProducts> list = _boughtProductsService.Get(newValue.Id);
+            List<BoughtProducts> list = _boughtProductsService.GetById(newValue.Id);
             foreach (var item in list)
             {
                 BoughtProductsList.Add(item);

@@ -9,5 +9,12 @@ namespace Grocery.Core.Interfaces.Repositories
         T Add(T item);
         T? Update(T item);
         T? Delete(T item);
+
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<T?> GetByIdAsync(int id);
+        Task AddAsync(T entity);
+        Task UpdateAsync(T entity);
+        Task DeleteAsync(int id);
     }
+
 }

@@ -6,7 +6,6 @@ using Grocery.Core.Interfaces.Services;
 using Grocery.Core.Interfaces.Repositories;
 using Grocery.Core.Data.Repositories;
 using CommunityToolkit.Maui;
-
 namespace Grocery.App
 {
     public static class MauiProgram
@@ -47,6 +46,18 @@ namespace Grocery.App
             builder.Services.AddTransient<LoginView>().AddTransient<LoginViewModel>();
             builder.Services.AddTransient<BestSellingProductsView>().AddTransient<BestSellingProductsViewModel>();
             builder.Services.AddTransient<BoughtProductsView>().AddTransient<BoughtProductsViewModel>();
+
+            builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddSingleton<IProductCategoryRepository, ProductCategoryRepository>();
+
+            builder.Services.AddSingleton<CategoryService>();
+            builder.Services.AddSingleton<ProductCategoryService>();
+
+            builder.Services.AddSingleton<CategoriesViewModel>();
+            builder.Services.AddSingleton<CategoriesView>();
+
+            builder.Services.AddTransient<ProductCategoriesViewModel>();
+            builder.Services.AddTransient<ProductCategoriesView>();
             return builder.Build();
         }
     }

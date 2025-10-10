@@ -1,37 +1,23 @@
 using Grocery.App.ViewModels;
+using Grocery.Core.Models;
 
-namespace Grocery.App.Views
+namespace Grocery.App.Views;
+
+public partial class CategoriesView : ContentPage
 {
-    public partial class CategoriesView : ContentPage
+    public CategoriesView(CategoriesViewModel viewModel)
     {
-        // Initialiseert een nieuwe instance van de CategoriesView class.
-        public CategoriesView(CategoriesViewModel viewModel)
-        {
-            InitializeComponent();
-            BindingContext = viewModel;
-        }
-        // Wordt aangeroepen wanneer de view zichtbaar wordt.
-        // Triggert het laden van data in het ViewModel.
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
+        InitializeComponent();
+        BindingContext = viewModel;
+    }
 
-            if (BindingContext is CategoriesViewModel viewModel)
-            {
-                viewModel.OnAppearing();
-            }
-        }
+    private async void OnCategorySelected(object sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection.FirstOrDefault() is not Category selectedCategory)
+            return;
 
-        // Wordt aangeroepen wanneer de view verdwijnt.
-        // Ruimt resources op in het ViewModel.
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
+        await Shell.Current.GoToAsync($"{nameof(ProductCategoriesView)}?CategoryId={selectedCategory.Id}");
 
-            if (BindingContext is CategoriesViewModel viewModel)
-            {
-                viewModel.OnDisappearing();
-            }
-        }
+        ((CollectionView)sender).SelectedItem = null;
     }
 }

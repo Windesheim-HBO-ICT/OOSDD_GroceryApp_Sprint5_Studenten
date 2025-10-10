@@ -47,5 +47,9 @@ namespace Grocery.Core.Data.Repositories
 
             return product;
         }
+        public Task<IEnumerable<Product>> GetAllAsync()
+        {
+            return Task.FromResult(products.AsEnumerable());
+        }
     }
 }

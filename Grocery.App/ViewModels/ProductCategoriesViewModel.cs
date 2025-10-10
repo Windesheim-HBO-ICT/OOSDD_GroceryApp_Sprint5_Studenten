@@ -6,96 +6,65 @@ using System.Collections.ObjectModel;
 
 namespace Grocery.App.ViewModels
 {
-    [QueryProperty(nameof(Category), nameof(Category))]
-    public partial class ProductCategoriesViewModel : BaseViewModel
+    [QueryProperty(nameof(CategoryId), "CategoryId")]
+    public partial class ProductCategoriesViewModel : ObservableObject
     {
+        private readonly ICategoryService _categoryService;
         private readonly IProductCategoryService _productCategoryService;
-        private string searchText = string.Empty;
-        private List<Product> allProducts = new();
 
-        // Observable collectie van gefilterde producten voor databinding.
-        public ObservableCollection<Product> FilteredProducts { get; set; }
-
-        // De geselecteerde categorie.
         [ObservableProperty]
-        private Category category = new(0, "Geen categorie");
+        private Category currentCategory;
 
-        // Initialiseert een nieuwe instance van de ProductCategoriesViewModel class.
-        public ProductCategoriesViewModel(IProductCategoryService productCategoryService)
+        [ObservableProperty]
+        private string categoryId;
+
+        public ObservableCollection<Product> AssignedProducts { get; } = new();
+        public ObservableCollection<Product> AvailableProducts { get; } = new();
+
+        public ProductCategoriesViewModel(ICategoryService catService, IProductCategoryService prodCatService)
         {
-            _productCategoryService = productCategoryService;
-            FilteredProducts = new ObservableCollection<Product>();
+            _categoryService = catService;
+            _productCategoryService = prodCatService;
         }
 
-        // Wordt aangeroepen wanneer de Category property verandert.
-        // Laadt producten voor de nieuwe categorie.
-        partial void OnCategoryChanged(Category value)
+        async partial void OnCategoryIdChanged(string value)
         {
-            if (value != null)
+            if (int.TryParse(value, out int id))
             {
-                Title = value.Name;
-                LoadProducts(value.Id);
+                await LoadDataAsync(id);
             }
         }
 
-        // Laadt alle producten voor de opgegeven categorie.
-        private void LoadProducts(int categoryId)
+        private async Task LoadDataAsync(int categoryId)
         {
-            allProducts = _productCategoryService.GetProductsByCategoryId(categoryId);
-            ApplyFilter();
+            CurrentCategory = await _categoryService.GetCategoryByIdAsync(categoryId);
+            var productSets = await _productCategoryService.GetAssignedAndAvailableProductsAsync(categoryId);
+
+            AssignedProducts.Clear();
+            foreach (var p in productSets.Assigned) AssignedProducts.Add(p);
+
+            AvailableProducts.Clear();
+            foreach (var p in productSets.Available) AvailableProducts.Add(p);
         }
 
-        // Past de zoekfilter toe op de productlijst.
-        private void ApplyFilter()
-        {
-            FilteredProducts.Clear();
-
-            foreach (Product product in allProducts)
-            {
-                if (IsProductMatchingSearch(product))
-                {
-                    FilteredProducts.Add(product);
-                }
-            }
-        }
-
-        // Controleert of een product voldoet aan de zoekterm.
-        private bool IsProductMatchingSearch(Product product)
-        {
-            if (string.IsNullOrWhiteSpace(searchText))
-            {
-                return true;
-            }
-
-            return product.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase);
-        }
-
-        // Voert een zoekopdracht uit op de productlijst.
-        // Command handler voor de SearchBar.
         [RelayCommand]
-        private void PerformSearch(string searchQuery)
+        private async Task AddToCategory(Product product)
         {
-            searchText = searchQuery ?? string.Empty;
-            ApplyFilter();
+            if (product == null) return;
+            await _productCategoryService.AssignProductToCategoryAsync(product.Id, CurrentCategory.Id);
+
+            AvailableProducts.Remove(product);
+            AssignedProducts.Add(product);
         }
 
-        // Herlaadt producten wanneer de view zichtbaar wordt.
-        public override void OnAppearing()
+        [RelayCommand]
+        private async Task RemoveFromCategory(Product product)
         {
-            base.OnAppearing();
+            if (product == null) return;
+            await _productCategoryService.RemoveProductFromCategoryAsync(product.Id, CurrentCategory.Id);
 
-            if (Category != null && Category.Id != 0)
-            {
-                LoadProducts(Category.Id);
-            }
-        }
-
-        // Ruimt resources op wanneer de view verdwijnt.
-        public override void OnDisappearing()
-        {
-            base.OnDisappearing();
-            FilteredProducts.Clear();
-            searchText = string.Empty;
+            AssignedProducts.Remove(product);
+            AvailableProducts.Add(product);
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Grocery.Core.Interfaces.Repositories;
 using Grocery.Core.Interfaces.Services;
 using Grocery.Core.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Grocery.Core.Services
 {
@@ -8,50 +10,19 @@ namespace Grocery.Core.Services
     {
         private readonly ICategoryRepository _categoryRepository;
 
-        // Initialiseerd een nieuwe instance van de CategoryService class.
         public CategoryService(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }
 
-        // Ontvangt alle categorieen van de repository.
-        public List<Category> GetAll()
+        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
         {
-            return _categoryRepository.GetAll();
+            return await _categoryRepository.GetAllAsync();
         }
 
-        // Onvangt een categorie door zijn unieke identificatie.
-        public Category? Get(int id)
+        public async Task<Category> GetCategoryByIdAsync(int id)
         {
-            return _categoryRepository.Get(id);
-        }
-
-        // Voegt een nieuwe categorie na het valideren.
-        public Category? Add(Category item)
-        {
-            if (_categoryRepository.Exists(item.Name))
-            {
-                return null;
-            }
-            return _categoryRepository.Add(item);
-        }
-
-        // Updates een al gemaatke categorie in de repository.
-        public Category? Update(Category item)
-        {
-            return _categoryRepository.Update(item);
-        }
-
-        // Verwijderd een categorie van de repository.
-        public Category? Delete(Category item)
-        {
-            return _categoryRepository.Delete(item);
-        }
-
-        // Valideert of een categorie naam al in gebruik is.
-        public bool IsCategoryNameUnique(string name)
-        {
-            return !_categoryRepository.Exists(name);
+            return await _categoryRepository.GetAsync(id);
         }
     }
 }

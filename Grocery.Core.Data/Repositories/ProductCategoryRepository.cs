@@ -1,75 +1,58 @@
 ﻿using Grocery.Core.Interfaces.Repositories;
 using Grocery.Core.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Grocery.Core.Data.Repositories
 {
     public class ProductCategoryRepository : IProductCategoryRepository
     {
-        private readonly List<ProductCategory> productCategories;
-
-        public ProductCategoryRepository()
+        private readonly List<ProductCategory> _productCategories = new List<ProductCategory>
         {
-            productCategories = [
-                new ProductCategory(1, 1, 1),  // Melk -> Zuivel
-                new ProductCategory(2, 2, 1),  // Kaas -> Zuivel
-                new ProductCategory(3, 3, 3),  // Brood -> Bakkerij
-                new ProductCategory(4, 4, 2)   // Cornflakes -> Ontbijtgranen
-            ];
+            new ProductCategory(1, "Relatie Appel-Fruit", 1, 2),
+            new ProductCategory(2, "Relatie Melk-Zuivel", 2, 3),
+            new ProductCategory(3, "Product Vlees-Vlees & Vis", 3, 4)
+        };
+
+        public Task<ProductCategory?> Get(int id)
+        {
+            var pc = _productCategories.FirstOrDefault(p => p.Id == id);
+            return Task.FromResult(pc);
         }
 
-        // Ontvangt alle product-categorieen van de repository.
-        public List<ProductCategory> GetAll()
+        public Task<ProductCategory?> Get(string name)
         {
-            return productCategories;
+            var pc = _productCategories.FirstOrDefault(p => p.Name.Equals(name, System.StringComparison.OrdinalIgnoreCase));
+            return Task.FromResult(pc);
+        }
+        public Task<IEnumerable<ProductCategory>> GetByCategoryIdAsync(int categoryId)
+        {
+            var result = _productCategories.Where(pc => pc.CategoryId == categoryId);
+            return Task.FromResult(result.AsEnumerable());
+
+        }
+        public Task AddRelationAsync(int productId, int categoryId)
+        {
+            int newId = _productCategories.Any() ? _productCategories.Max(pc => pc.Id) + 1 : 1;
+
+            var newRelation = new ProductCategory(newId, $"Relatie P{productId}-C{categoryId}", productId, categoryId);
+
+            _productCategories.Add(newRelation);
+
+            return Task.CompletedTask;
         }
 
-        // Onvangt alle product-categorieen voor een specifieke categorie.
-        public List<ProductCategory> GetByCategoryId(int categoryId)
+        public Task RemoveRelationAsync(int productId, int categoryId)
         {
-            return productCategories.Where(pc => pc.CategoryId == categoryId).ToList();
-        }
+            var relationToRemove = _productCategories.FirstOrDefault(pc => pc.ProductId == productId && pc.CategoryId == categoryId);
 
-        // Ontvangt alle product-categorien voor een specifieke product.
-        public List<ProductCategory> GetByProductId(int productId)
-        {
-            return productCategories.Where(pc => pc.ProductId == productId).ToList();
-        }
-
-        // Onvangt een product-categorie door zijn unieke indentificatie.
-        public ProductCategory? Get(int id)
-        {
-            return productCategories.FirstOrDefault(pc => pc.Id == id);
-        }
-
-        // Voegt een nieuwe product-categorie toe in de repository.
-        public ProductCategory Add(ProductCategory item)
-        {
-            int newId = productCategories.Any() ? productCategories.Max(pc => pc.Id) + 1 : 1;
-            item.Id = newId;
-            productCategories.Add(item);
-            return item;
-        }
-
-        // Updates een al bestaande product-categorie in de repository.
-        public ProductCategory? Update(ProductCategory item)
-        {
-            ProductCategory? productCategory = productCategories.FirstOrDefault(pc => pc.Id == item.Id);
-            if (productCategory == null) return null;
-
-            productCategory.ProductId = item.ProductId;
-            productCategory.CategoryId = item.CategoryId;
-            return productCategory;
-        }
-
-        // Verwijderd een product-categorie in de repository.
-        public ProductCategory? Delete(ProductCategory item)
-        {
-            ProductCategory? productCategory = productCategories.FirstOrDefault(pc => pc.Id == item.Id);
-            if (productCategory != null)
+            if (relationToRemove != null)
             {
-                productCategories.Remove(productCategory);
+                _productCategories.Remove(relationToRemove);
             }
-            return productCategory;
+
+            return Task.CompletedTask;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Grocery.Core.Interfaces.Services
 
         Category? Update(Category item); // Updates een al gemaakte categorie.
 
-        Category? Delete(Category item); //Verwijderd een categorie.
+        Category? Delete(Category item); // Verwijderd een categorie.
 
         bool IsCategoryNameUnique(string name); // Valideert of de categorie naam al bestaat.
     }
